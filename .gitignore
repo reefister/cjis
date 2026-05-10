@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Data files (VERY IMPORTANT)
+Reverie.json
+
+# OS
+.DS_Store
+Thumbs.db
