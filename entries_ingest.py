@@ -3,25 +3,26 @@ import psycopg2
 from datetime import datetime
 
 with open('Reverie.json','r', encoding='utf-8') as file:
-    data = json.load(file)
+    data = json.load(file)                             
 
 
-entries = data['entries']
+entries = data['entries']                            
 
 
 
-conn = psycopg2.connect(
-    host="localhost",
+conn = psycopg2.connect(                              
+    host="localhost",                                      
     database="cjis",
     user="postgres",
     password="CJIS",
     port="5432"
 )
-cursor = conn.cursor()
+cursor = conn.cursor()                                      
 
 insert_query = """
 INSERT INTO journal_entries (dayone_id, date, raw_text, raw_json)
-VALUES (%s, %s, %s, %s);
+VALUES (%s, %s, %s, %s)
+ON CONFLICT (dayone_id) DO NOTHING;
 """
 
 
@@ -51,8 +52,10 @@ for entry in entries:
     )
     )
 
-    conn.commit()
-    break
+    conn.commit()                          
+    
 
 cursor.close()
 conn.close()
+
+
