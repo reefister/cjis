@@ -8,8 +8,6 @@ with open('Reverie.json','r', encoding='utf-8') as file:
 
 entries = data['entries']                            
 
-
-
 conn = psycopg2.connect(                              
     host="localhost",                                      
     database="cjis",
@@ -37,10 +35,6 @@ for entry in entries:
 
     creation_date = datetime.fromisoformat(creation_date_str.replace("Z", "+00:00"))
 
-    print("UUID:", uuid)
-    print("Created:", creation_date)
-    print("Text preview:", text[:80])
-    print("Raw JSON keys:", list(raw_json.keys()))
 
     cursor.execute(
     insert_query,
@@ -51,10 +45,8 @@ for entry in entries:
         json.dumps(raw_json)
     )
     )
-
-    conn.commit()                          
-    
-
+                              
+conn.commit()                          
 cursor.close()
 conn.close()
 
