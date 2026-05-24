@@ -4,14 +4,26 @@ from app.db import get_connection
 router = APIRouter()
 
 @router.get("/entries")
-def get_entries(limit=10,offset=0):
+def get_entries(limit=10,offset=0,start_date=None,end_date=None):
     conn = get_connection()
     cursor = conn.cursor()
     get_query = """
     Select id, dayone_id, date, raw_text from journal_entries 
-    ORDER BY date DESC LIMIT %s OFFSET %s
     """
-    cursor.execute(get_query,(limit,offset))
+    conditions = []
+    params = []
+    if start_date is not None:
+        conditions.append("date >= %s")
+        params.append(start_date)
+    if end_date is not None:
+        conditions.append("date <= %s")
+        params.append(end_date)
+    if len(conditions)>=1:
+        get_query += " Where "+" AND ".join(conditions)
+    get_query += " ORDER BY date DESC LIMIT %s OFFSET %s"
+    params.append(limit)
+    params.append(offset)
+    cursor.execute(get_query,(tuple(params)))
     tuple_rows = cursor.fetchall()
     
     entries_list = []
@@ -26,4 +38,3 @@ def get_entries(limit=10,offset=0):
     cursor.close()
     conn.close()
     return entries_list
-
