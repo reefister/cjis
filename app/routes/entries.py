@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 from app.db import get_connection
 
-router = APIRouter()
+entries_router = APIRouter()
 
-@router.get("/entries")
+@entries_router.get("/entries")
 def get_entries(limit=10,offset=0,start_date=None,end_date=None):
     conn = get_connection()
     cursor = conn.cursor()

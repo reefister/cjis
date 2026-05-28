@@ -1,11 +1,12 @@
 from fastapi import FastAPI
-from app.routes.entries import router
-
+from app.routes.entries import entries_router
+from app.routes.search import search_router
 
 
 app = FastAPI()
 
-app.include_router(router)
+app.include_router(entries_router)
+app.include_router(search_router)
 
 @app.get("/ping")
 def test_check():
