@@ -47,11 +47,20 @@ for id_value,dayone_id,date,raw_text_value,raw_json,created_at in tuple_rows:
 
     entry_id = id_value
     concepts_json_array = extract_concepts(raw_text_value)
-    concepts = json.loads(concepts_json_array)
+    if concepts_json_array is None:
+        continue
+    if not concepts_json_array:
+        continue
+    try:
+        concepts = json.loads(concepts_json_array)
+    except json.JSONDecodeError:
+        print(f"Skipping entry {entry_id}: malformed JSON response")
+        continue
     cursor.execute(update_query,(json.dumps(concepts),entry_id))
+    print(f"processing {entry_id}")
+    conn.commit()
 
     
-conn.commit()
 cursor.close()
 conn.close()
 
