@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from app.db import get_connection
 
 analytics_sentiment_router = APIRouter()
+analytics_concept_frequency_router = APIRouter()
 
 @analytics_sentiment_router.get("/analytics/sentiment")
 def sentiment_analytics(word):
@@ -29,5 +30,24 @@ def sentiment_analytics(word):
     conn.close()
     return retrieved_list
 
+@analytics_concept_frequency_router.get("/analytics/concept/frequency")
+def concept_frequency():
+    conn = get_connection()
+    cursor = conn.cursor()
+    get_query = """ SELECT lower(concept),count(*) as total_count FROM entry_features e join journal_entries j on e.entry_id = j.id,jsonb_array_elements_text(e.concepts) AS concept GROUP BY lower(concept) ORDER BY total_count desc"""
+
+    cursor.execute(get_query)
+    tuple_rows = cursor.fetchall()
+
+    retrieved_list = []
+    for concept,count in tuple_rows:
+        dict_row = {}
+        dict_row['concept'] = concept
+        dict_row['count'] = count
+        retrieved_list.append(dict_row)
+
+    cursor.close()
+    conn.close()
+    return retrieved_list
 
 
