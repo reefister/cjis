@@ -2,11 +2,14 @@ import json
 import psycopg2
 from datetime import datetime
 
+
 with open('Reverie.json','r', encoding='utf-8') as file:
     data = json.load(file)                             
 
 
-entries = data['entries']                            
+entries = data['entries']       
+
+print(f"Total entries in JSON: {len(entries)}")
 
 conn = psycopg2.connect(                              
     host="localhost",                                      
@@ -45,6 +48,7 @@ for entry in entries:
         json.dumps(raw_json)
     )
     )
+    print(f"Inserting {uuid}")
                               
 conn.commit()                          
 cursor.close()

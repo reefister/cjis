@@ -8,6 +8,7 @@ __pycache__/
 
 # Data files (VERY IMPORTANT)
 Reverie.json
+*.sql
 
 # OS
 .DS_Store

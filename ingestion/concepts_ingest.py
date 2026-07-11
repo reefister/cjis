@@ -23,7 +23,7 @@ def extract_concepts(text):
                 },
                 {"role": "user", "content": str(text)}
             ],
-            model="llama-3.3-70b-versatile",
+            model="llama-3.1-8b-instant",
             temperature=0.3,
         )
         return completion.choices[0].message.content.strip()
