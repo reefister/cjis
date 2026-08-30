@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routes.entries import entries_router
 from app.routes.search import search_router
+from app.routes.semantic_search import semantic_router
 from app.routes.analytics import analytics_sentiment_router, analytics_concept_frequency_router, analytics_concept_coocurrence_router
 
 
@@ -12,6 +13,7 @@ app.include_router(search_router)
 app.include_router(analytics_sentiment_router)
 app.include_router(analytics_concept_frequency_router)
 app.include_router(analytics_concept_coocurrence_router)
+app.include_router(semantic_router)
 
 @app.get("/ping")
 def test_check():
